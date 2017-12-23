@@ -151,6 +151,7 @@ module.exports = {
     getNodeIcons: registry.getNodeIcons,
     getNodeExampleFlows: library.getExampleFlows,
     getNodeExampleFlowPath: library.getExampleFlowPath,
+    getDashboardPath: registry.getDashboardPath,
 
     clearRegistry: registry.clear,
     cleanModuleList: registry.cleanModuleList,

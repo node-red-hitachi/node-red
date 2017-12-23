@@ -34,6 +34,7 @@ var nodeList = [];
 var nodeConstructors = {};
 var nodeTypeToId = {};
 var moduleNodes = {};
+var dashboardPath = null;
 
 function init(_settings,_loader) {
     settings = _settings;
@@ -640,6 +641,23 @@ function getNodeIcons() {
     return iconList;
 }
 
+
+function getDashboardPath() {
+    if (dashboardPath === null) {
+        for(var module in moduleConfigs) {
+            if (module === "node-red-dashboard") {
+                var conf = moduleConfigs[module];
+                var base = conf.nodes["ui_base"];
+                var file = base.file;
+                var paths = file.split(path.sep);
+                dashboardPath = paths.slice(0,-2).join(path.sep);
+                break;
+            }
+        }
+    }
+    return dashboardPath;
+}
+
 var registry = module.exports = {
     init: init,
     load: load,
@@ -663,6 +681,9 @@ var registry = module.exports = {
 
     getNodeIconPath: getNodeIconPath,
     getNodeIcons: getNodeIcons,
+
+    getDashboardPath: getDashboardPath,
+    
     /**
      * Gets all of the node template configs
      * @return all of the node templates in a single string

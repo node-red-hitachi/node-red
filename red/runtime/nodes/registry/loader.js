@@ -72,7 +72,7 @@ function createNodeApi(node) {
         util: runtime.util,
         version: runtime.version,
     }
-    copyObjectProperties(runtime.nodes,red.nodes,["createNode","getNode","eachNode","addCredentials","getCredentials","deleteCredentials" ]);
+    copyObjectProperties(runtime.nodes,red.nodes,["createNode","getNode","eachNode","addCredentials","getCredentials","deleteCredentials","getDashboardPath" ]);
     red.nodes.registerType = function(type,constructor,opts) {
         runtime.nodes.registerType(node.id,type,constructor,opts);
     }
