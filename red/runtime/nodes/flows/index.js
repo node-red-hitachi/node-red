@@ -226,6 +226,35 @@ function handleStatus(node,statusMessage) {
     }
 }
 
+function delegateEvent(node,name,msg) {
+    var handled = false;
+    if (activeFlows[node.z]) {
+        handled = activeFlows[node.z].handleEvent(node,name,msg);
+    } else if (activeNodesToFlow[node.z] && activeFlows[activeNodesToFlow[node.z]]) {
+        handled = activeFlows[activeNodesToFlow[node.z]].handleEvent(node,name,msg);
+    } else if (activeFlowConfig.subflows[node.z] && subflowInstanceNodeMap[node.id]) {
+        subflowInstanceNodeMap[node.id].forEach(function(n) {
+            handled = handled || delegateEvent(getNode(n),name,msg);
+        });
+    }
+    return handled;
+}
+function handleEvent(node,name,msg) {
+    var handled = false;
+    if (node.z) {
+        handled = delegateEvent(node,name,msg);
+    } else {
+        if (activeFlowConfig.configs[node.id]) {
+            activeFlowConfig.configs[node.id]._users.forEach(function(id) {
+                var userNode = activeFlowConfig.allNodes[id];
+                handled = handled || delegateEvent(userNode,name,msg);
+            })
+        }
+    }
+    return handled;
+}
+
+
 
 function start(type,diff,muteLog) {
     //dumpActiveNodes();
@@ -662,6 +691,7 @@ module.exports = {
 
     handleError: handleError,
     handleStatus: handleStatus,
+    handleEvent: handleEvent,
 
     checkTypeInUse: checkTypeInUse,
 

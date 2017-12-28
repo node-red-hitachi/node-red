@@ -218,6 +218,10 @@ Node.prototype.receive = function(msg) {
     }
 };
 
+Node.prototype.send_event = function(name, msg) {
+    flows.handleEvent(this, name, msg);
+};
+
 function log_helper(self, level, msg) {
     var o = {
         level: level,

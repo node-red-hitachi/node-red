@@ -98,6 +98,22 @@
             "selected": "selected nodes"
         }
     },
+    "event": {
+        "event": "event (all)",
+        "eventNodes": "event (__number__)",
+        "label": {
+            "source": "Report event from",
+            "node": "node",
+            "type": "type",
+            "selectAll": "select all",
+            "sortByLabel": "sort by label",
+            "sortByType": "sort by type"
+        },
+        "scope": {
+            "all": "all nodes",
+            "selected": "selected nodes"
+        }
+    },
     "debug": {
         "output": "Output",
         "msgprop": "message property",
@@ -776,6 +792,7 @@
             "action": "Action",
             "addnewline": "Add newline (\\n) to each payload?",
             "createdir": "Create directory if it doesn't exist?",
+	    "send_event": "Send event at end?",
             "outputas": "Output",
             "breakchunks": "Break into chunks",
             "breaklines": "Break into lines",

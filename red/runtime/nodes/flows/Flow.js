@@ -31,6 +31,7 @@ function Flow(global,flow) {
     var subflowInstanceNodes = {};
     var catchNodeMap = {};
     var statusNodeMap = {};
+    var eventNodeMap = {};
 
     this.start = function(diff) {
         var node;
@@ -38,6 +39,7 @@ function Flow(global,flow) {
         var id;
         catchNodeMap = {};
         statusNodeMap = {};
+	eventNodeMap = {};
 
         var configNodes = Object.keys(flow.configs);
         var configNodeAttempts = {};
@@ -118,6 +120,9 @@ function Flow(global,flow) {
                 } else if (node.type === "status") {
                     statusNodeMap[node.z] = statusNodeMap[node.z] || [];
                     statusNodeMap[node.z].push(node);
+                } else if (node.type === "event") {
+                    eventNodeMap[node.z] = eventNodeMap[node.z] || [];
+                    eventNodeMap[node.z].push(node);
                 }
             }
         }
@@ -288,6 +293,39 @@ function Flow(global,flow) {
         }
         return handled;
     }
+
+    this.handleEvent = function(node,name,eventMessage) {
+        var targetEventNodes = null;
+        var reportingNode = node;
+        var handled = false;
+        while (reportingNode && !handled) {
+            targetEventNodes = eventNodeMap[reportingNode.z];
+            if (targetEventNodes) {
+                targetEventNodes.forEach(function(targetEventNode) {
+                    if (targetEventNode.scope && targetEventNode.scope.indexOf(node.id) === -1) {
+                        return;
+                    }
+                    var message = {
+                        topics: name,
+                        payload: {
+                            source: {
+                                id: node.id,
+                                type: node.type,
+                                name: node.name
+                            },
+			    data: eventMessage
+                        },
+                    };
+                    targetEventNode.receive(message);
+                    handled = true;
+                });
+            }
+            if (!handled) {
+                reportingNode = activeNodes[reportingNode.z];
+            }
+        }
+    }
+
 }
 
 function createNode(type,config) {
