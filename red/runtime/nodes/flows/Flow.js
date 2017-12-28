@@ -39,7 +39,7 @@ function Flow(global,flow) {
         var id;
         catchNodeMap = {};
         statusNodeMap = {};
-	eventNodeMap = {};
+        eventNodeMap = {};
 
         var configNodes = Object.keys(flow.configs);
         var configNodeAttempts = {};
@@ -313,7 +313,7 @@ function Flow(global,flow) {
                                 type: node.type,
                                 name: node.name
                             },
-			    data: eventMessage
+                            data: eventMessage
                         },
                     };
                     targetEventNode.receive(message);

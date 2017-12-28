@@ -26,7 +26,7 @@ module.exports = function(RED) {
         this.appendNewline = n.appendNewline;
         this.overwriteFile = n.overwriteFile.toString();
         this.createDir = n.createDir || false;
-	this.sendEventAtEnd = n.sendEventAtEnd || false;
+        this.sendEventAtEnd = n.sendEventAtEnd || false;
         var node = this;
         node.wstream = null;
         node.data = [];
@@ -123,9 +123,9 @@ module.exports = function(RED) {
                     }
                 }
             }
-	    if (node.sendEventAtEnd) {
-		node.send_event("write-complete", { filename: filename } );
-	    }
+            if (node.sendEventAtEnd) {
+                node.send_event("write-complete", { filename: filename } );
+            }
         });
         this.on('close', function() {
             if (node.wstream) { node.wstream.end(); }
